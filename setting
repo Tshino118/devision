@@ -1,0 +1,15 @@
+# docker_setup.sh: Pulling base images
+# [Note] If you need to change base image that please edit Dockerfile.
+BASE_IMAGE="nvidia/cuda:11.7.0-devel-ubuntu22.04"
+
+# repository_setup.sh: Building Docker repositroy
+repository_name="cuda/torch"
+repository_version="1.0"
+
+# launch_container.sh: Launch Docker container
+container_name="cuda-torch"
+USER_NAME="cuda_torch_test"
+GROUP_NAME=$USER_NAME
+
+SCRIPT_DIR=$(cd $(dirname $0); pwd)
+container_run_args="-v $SCRIPT_DIR/work:/opt/work -v /tmp/.X11-unix/:/tmp/.X11-unix -e DISPLAY=$DISPLAY --device=/dev/video0:/dev/video0 --device=/dev/video1:/dev/video1 -it --gpus all -e LOCAL_UID=$(id -u $USER) -e LOCAL_GID=$(id -g $USER) -e LOCAL_USER=$USER_NAME -e LOCAL_GROUP=$GROUP_NAME -e LOCAL_HOME=$HOME_DIR"
